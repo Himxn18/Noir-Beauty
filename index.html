@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOIR Beauty | The Full Collection</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        @font-face {
+            font-family: "ClassyVogue";
+            src: url("classy-vogue/ClassyVoguePersonalUse.otf") format("opentype");
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+        section {
+            scroll-margin-top: 80px;
+        }
+        
+        :root {
+            --teal: rgb(2, 65, 50);
+            --mint: rgb(198, 219, 213);
+            --shadow: rgba(2, 65, 50, 0.2);
+        }
+
+        body { 
+            background-color: var(--mint); 
+            color: var(--teal); 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+        }
+
+        h1, h2, h3, .logo-text { 
+            font-family: 'ClassyVogue', 'Playfair Display', serif; 
+            letter-spacing: 0.05em;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+        }
+
+        .coming-soon-overlay {
+            background: rgba(198, 219, 213, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border-radius: inherit;
+        }
+
+        .horizontal-scroll {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 2rem;
+            padding-bottom: 2rem;
+        }
+        .horizontal-scroll::-webkit-scrollbar { display: none; }
+
+        .card-hover {
+            transition: all 0.4s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+        
+        .nav-logo-container {
+            display: flex;
+            align-items: center;
+            height: 60px;
+        }
+        .logo-img {
+            height: 100%;
+            width: auto;
+            max-height: 50px;
+            min-width: 120px;
+            object-fit: contain;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05) translateY(-2px);
+            filter: brightness(1.2);
+        }
+
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body x-data="{ mobileMenu: false }" :class="mobileMenu ? 'overflow-hidden' : ''">
+
+    <div x-show="mobileMenu" 
+         x-cloak
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 translate-y-[-10px]"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 translate-y-0"
+         x-transition:leave-end="opacity-0 translate-y-[-10px]"
+         class="fixed inset-0 z-[150] bg-[rgb(198,219,213)] flex flex-col items-center justify-center space-y-8 text-xl uppercase tracking-[0.2em] md:hidden">
+        
+        <button @click="mobileMenu = false" class="absolute top-8 right-8 p-2">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+
+        <a href="#" @click="mobileMenu = false" class="hover:opacity-50 transition">Home</a>
+        <a href="#about" @click="mobileMenu = false" class="hover:opacity-50 transition">About</a>
+        <a href="#accessories" @click="mobileMenu = false" class="hover:opacity-50 transition">Accessories</a>
+        <a href="#treats" @click="mobileMenu = false" class="hover:opacity-50 transition">Team Up</a>
+        <a href="#hampers" @click="mobileMenu = false" class="hover:opacity-50 transition">Hampers</a>
+        <a href="#categories" @click="mobileMenu = false" class="hover:opacity-50 transition">Categories</a>
+        <a href="#shades" @click="mobileMenu = false" class="hover:opacity-50 transition">Shades</a>
+        <a href="#contact" @click="mobileMenu = false" class="hover:opacity-50 transition">Contact</a>
+    </div>
+
+    <nav class="fixed top-0 w-full z-[100] glass px-6 py-3 flex justify-between items-center">
+        <div class="nav-logo-container">
+            <a href="#"><img src="logo3.png" alt="NOIR" class="logo-img"></a>
+        </div>
+        
+        <div class="hidden md:flex space-x-10 text-xs font-medium uppercase tracking-[0.2em]">
+            <a href="#" class="hover:opacity-50 transition">Home</a>
+            <a href="#about" class="hover:opacity-50 transition">About</a>
+            <a href="#accessories" class="hover:opacity-50 transition">Accessories</a>
+            <a href="#treats" class="hover:opacity-50 transition">Team Up</a>
+            <a href="#hampers" class="hover:opacity-50 transition">Hampers</a>
+            <a href="#categories" class="hover:opacity-50 transition">Categories</a>
+            <a href="#shades" class="hover:opacity-50 transition">Shades</a>
+            <a href="#contact" class="hover:opacity-50 transition">Contact</a>
+        </div>
+
+        <button @click="mobileMenu = true" class="md:hidden flex flex-col space-y-1.5 p-2 outline-none">
+            <div class="w-1.5 h-1.5 bg-[rgb(2,65,50)] rounded-full"></div>
+            <div class="w-1.5 h-1.5 bg-[rgb(2,65,50)] rounded-full"></div>
+            <div class="w-1.5 h-1.5 bg-[rgb(2,65,50)] rounded-full"></div>
+        </button>
+    </nav>
+
+    <section class="h-[80vh] flex flex-col justify-center items-center text-center px-4">
+        <h1 class="text-6xl md:text-8xl mb-4 reveal">NOIR Beauty</h1>
+        <p class="text-xl opacity-70 italic reveal uppercase tracking-widest">"Elevate Your Elegance, Embrace Your Noir"</p>
+    </section>
+
+    <section id="about" class="py-24 px-6 max-w-7xl mx-auto border-t border-[rgb(2,65,50)]/5">
+        <h2 class="text-4xl md:text-6xl mb-16 reveal text-center">The NOIR Philosophy</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+            <div class="space-y-6 reveal">
+                <h4 class="text-xs font-bold uppercase tracking-[0.3em] opacity-50 mb-4">Our Origin</h4>
+                <p class="text-lg leading-relaxed opacity-90 italic">
+                    "Hello, from Team NOIR. We are announcing our brand as one of the most natural beauty brands in the industry."
+                </p>
+                <p class="text-base leading-relaxed opacity-70">
+                    We make 100% Vegan and Pure products. We do not use animals for trials or ingredients. We present unique, fresh, and all-natural products to nurture your skin and make you shine brighter than ever.
+                </p>
+            </div>
+
+            <div class="space-y-6 reveal lg:border-x lg:border-[rgb(2,65,50)]/10 lg:px-12">
+                <h4 class="text-xs font-bold uppercase tracking-[0.3em] opacity-50 mb-4">Our Vision</h4>
+                <p class="text-base leading-relaxed opacity-70">
+                    Our ultimate goal is your beauty, but better. By removing chemicals and heavy ingredients, we ensure nothing irritates your skin. Our formulas are gentle and effective for every skin type and tone.
+                </p>
+                <p class="text-base leading-relaxed opacity-70">
+                    We are promising to be the <b>#bestinthebizz</b>. NOIR is a home for your glow—a promise to make you feel as beautiful as you truly are.
+                </p>
+            </div>
+
+            <div class="reveal">
+                <h4 class="text-xs font-bold uppercase tracking-[0.3em] opacity-50 mb-4">Our Standards</h4>
+                <div class="glass p-8 rounded-[40px] space-y-8 shadow-sm">
+                    <p class="text-sm opacity-60 leading-relaxed">
+                        We believe we can make every skin-tone more radiant by connecting deeply with our customers' demands and requests.
+                    </p>
+                    <ul class="space-y-5 opacity-80 uppercase tracking-widest text-[10px] font-bold">
+                        <li class="flex items-center gap-4"><i data-lucide="shield-check" class="w-5 h-5 opacity-50"></i> Ethical Sourcing</li>
+                        <li class="flex items-center gap-4"><i data-lucide="sparkles" class="w-5 h-5 opacity-50"></i> Pure Organic Formulas</li>
+                        <li class="flex items-center gap-4"><i data-lucide="leaf" class="w-5 h-5 opacity-50"></i> Sustainable Luxury</li>
+                        <li class="flex items-center gap-4"><i data-lucide="heart" class="w-5 h-5 opacity-50"></i> Cruelty Free</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="accessories" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <h2 class="text-4xl mb-2">Accessories</h2>
+                <p class="opacity-60">The tools for perfection.</p>
+            </div>
+            <span class="text-xs font-bold uppercase tracking-widest bg-[rgb(2,65,50)] text-[rgb(198,219,213)] px-4 py-1 rounded-full">Coming Soon</span>
+        </div>
+        
+        <div class="horizontal-scroll px-2">
+            <template x-for="item in [{t:'Pro Tools', i:'scissors'}, {t:'Luxury Bags', i:'shopping-bag'}, {t:'Extra Merch', i:'shirt'}]">
+                <div class="min-w-[300px] h-[400px] glass rounded-[30px] flex flex-col items-center justify-center relative card-hover p-8 text-center shadow-sm">
+                    <div class="coming-soon-overlay absolute inset-0 rounded-[30px]">
+                        <p class="text-[rgb(2,65,50)] font-bold tracking-widest text-sm uppercase">Coming Soon</p>
+                    </div>
+                    <i :data-lucide="item.i" class="w-12 h-12 mb-6 opacity-30"></i>
+                    <h3 class="text-2xl" x-text="item.t"></h3>
+                </div>
+            </template>
+        </div>
+    </section>
+
+    <section id="treats" class="py-20 px-6 bg-white/10">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl text-center mb-16 reveal">Team Up Treats</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass p-10 rounded-[40px] relative reveal card-hover overflow-hidden shadow-sm">
+                    <div class="coming-soon-overlay absolute inset-0">
+                         <p class="text-[rgb(2,65,50)] font-bold tracking-widest text-sm uppercase">Curating Now</p>
+                    </div>
+                    <h3 class="text-3xl mb-4">Team Suggestions</h3>
+                    <p class="opacity-70 mb-6">Expert routines curated by our lead estheticians.</p>
+                    <div class="flex space-x-4">
+                        <div class="w-12 h-12 rounded-full bg-[rgb(2,65,50)]/10 flex items-center justify-center"><i data-lucide="star" class="w-5 h-5"></i></div>
+                        <div class="w-12 h-12 rounded-full bg-[rgb(2,65,50)]/10 flex items-center justify-center"><i data-lucide="heart" class="w-5 h-5"></i></div>
+                    </div>
+                </div>
+                <div class="glass p-10 rounded-[40px] relative reveal card-hover overflow-hidden shadow-sm">
+                    <div class="coming-soon-overlay absolute inset-0">
+                         <p class="text-[rgb(2,65,50)] font-bold tracking-widest text-sm uppercase">Locked</p>
+                    </div>
+                    <h3 class="text-3xl mb-4">Our Favorites</h3>
+                    <p class="opacity-70 mb-6">The products we can't live without at NOIR HQ.</p>
+                    <div class="flex space-x-4">
+                        <div class="w-12 h-12 rounded-full bg-[rgb(2,65,50)]/10 flex items-center justify-center"><i data-lucide="award" class="w-5 h-5"></i></div>
+                        <div class="w-12 h-12 rounded-full bg-[rgb(2,65,50)]/10 flex items-center justify-center"><i data-lucide="zap" class="w-5 h-5"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="hampers" class="py-32 px-6 max-w-7xl mx-auto text-center">
+        <h2 class="text-5xl mb-6 reveal">Gift Hampers</h2>
+        <p class="text-xl opacity-60 max-w-2xl mx-auto mb-16 reveal">The ultimate expression of luxury. Perfect for those who deserve the world.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <template x-for="i in [1,2,3]">
+                <div class="h-64 glass rounded-[40px] flex flex-col items-center justify-center relative reveal group cursor-wait shadow-sm">
+                    <div class="absolute -top-4 bg-[rgb(198,219,213)] px-6 py-1 border border-[rgb(2,65,50)]/20 rounded-full text-[10px] tracking-widest uppercase font-bold">Unwrapping Soon</div>
+                    <i data-lucide="gift" class="w-10 h-10 mb-4 opacity-20 group-hover:scale-110 transition-transform"></i>
+                    <p class="uppercase text-xs tracking-[0.3em] opacity-40">Luxury Set 0<span x-text="i"></span></p>
+                </div>
+            </template>
+        </div>
+    </section>
+
+    <section id="categories" class="py-32 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-5xl mb-4 reveal">Shop by Category</h2>
+            <p class="opacity-60 uppercase tracking-widest text-xs">Curated for your specific needs</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <template x-for="cat in [
+                {n:'Hair', i:'sparkles'}, {n:'Skin', i:'droplets'}, {n:'Fragrance', i:'wind'}, 
+                {n:'Face', i:'user'}, {n:'Cheek', i:'smile'}, {n:'Lip', i:'heart'}, 
+                {n:'Eye', i:'eye'}, {n:'Sets', i:'package'}, {n:'Body', i:'layers'}
+            ]">
+                <div class="glass h-40 rounded-[30px] flex flex-col items-center justify-center card-hover cursor-pointer p-4 group">
+                    <i :data-lucide="cat.i" class="w-8 h-8 mb-4 opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all"></i>
+                    <span class="text-sm font-bold uppercase tracking-widest" x-text="cat.n"></span>
+                </div>
+            </template>
+        </div>
+    </section>
+<section id="shades" class="py-32 px-6" x-data="{ 
+    modalOpen: false, 
+    activeShade: {},
+    shades: [
+        { 
+            name: 'Berry Glum', 
+            image: 'shade1.jpg', 
+            color: '#214478', 
+            desc: 'A clear shimmery lip gloss for a glass-like shine.',
+            ingredientsList: 'Petroleum Jelly, Coconut Oil, Mica, Vitamin E, Vanilla, Honey',
+            ingredientsDetails: 'Berry Glum – Clear Shimmery Lip Gloss is formulated using carefully selected, skin-friendly ingredients including purified petroleum jelly to provide a smooth, high-shine base, nourishing coconut oil to deeply moisturize and soften the lips, cosmetic-grade mica powder and food-grade edible luster dust to deliver a subtle, elegant shimmer, and vitamin E oil to support lip care and enhance the product’s stability. A minimal amount of food-grade vanilla extract and natural honey may be added for a gentle, pleasant flavor. This formulation is free from harsh chemicals and irritants, is suitable for sensitive lips, and is crafted through a mindful process that involves no harm to animals or nature. Berry Glum is 100% safe, cruelty-free, and ethically made.',
+            applicationDetails: 'Berry Glum Clear Shimmery Lip Gloss is best applied directly onto clean, moisturized lips using a clean applicator or fingertip for a natural, glass-like shine. It can also be layered over lip products to enhance dimension and glow, pairing especially well with nude, soft pink, berry, brown, and mauve lipsticks, as well as clear or lightly tinted lip balms. The lightweight yet nourishing formula provides a comfortable feel and a lasting glossy finish, with easy reapplication as needed throughout the day to maintain shine and hydration.'
+        },
+        { 
+            name: 'Dust Gradila', 
+            image: 'shade2.jpg', 
+            color: '#E27A53', 
+            desc: 'Warm, earthy brown finish with a natural shine.',
+            ingredientsList: 'Cocoa, Coffee, Dates, Natural Oils, Botanical Extracts',
+            ingredientsDetails: 'Dust Gradila – Brown Lip Gloss is a completely homemade formulation crafted using naturally derived, plant-based ingredients. It is created with a gentle glossy base blended with nourishing natural oils to moisturize and protect the lips, and is naturally tinted using earth-derived and plant-based ingredients such as cocoa, coffee, dates, or other beneficial botanical sources that provide a soft brown hue while offering natural nourishment. This formulation is free from synthetic pigments, harsh chemicals, and artificial additives. Dust Gradila is thoughtfully handmade using fruits, vegetables, and beneficial natural ingredients only, through an ethical process that causes no harm to animals or nature. It is 100% safe, cruelty-free, and consciously made.',
+            applicationDetails: 'Dust Gradila Brown Lip Gloss is best applied to clean, moisturized lips using a clean applicator or fingertip for a warm, earthy brown finish with a natural shine. It can be worn alone for a soft, grounded look or layered over nude, caramel, mocha, terracotta, or deep brown lipsticks to enhance depth and richness. The comfortable, nourishing formula delivers a smooth glossy appearance that lasts well with reapplication as needed to maintain hydration and color balance throughout the day.'
+        },
+        { 
+            name: 'Poppy Plum', 
+            image: 'shade3.jpg', 
+            color: '#7B090B', 
+            desc: 'A rich, naturally red finish with a healthy shine.',
+            ingredientsList: 'Pomegranate, Hibiscus, Berries, Plant Oils',
+            ingredientsDetails: 'Poppy Plum – Red Lip Gloss is a completely homemade formulation created using naturally derived, plant-based ingredients. It is crafted with a gentle glossy base combined with nourishing natural oils to soften and protect the lips, and is naturally tinted using fruit-derived ingredients such as pomegranate, hibiscus, berries and similar plant sources known for producing a rich red hue while offering beneficial properties. Additional nutrient-rich natural components may be included to support lip health. This formulation is free from synthetic pigments, harsh chemicals, and artificial additives. Poppy Plum is thoughtfully handmade using fruits, vegetables, and other beneficial natural ingredients only, through an ethical process that causes no harm to animals or nature. It is 100% safe, cruelty-free, and consciously made.',
+            applicationDetails: 'Poppy Plum Red Lip Gloss is best applied to clean, moisturized lips using a clean applicator or fingertip for a rich, naturally red finish with a healthy shine. It can be worn on its own for a bold yet fresh look or layered over nude, brown, deep rose, berry, or classic red lipsticks to intensify color and add luminous depth. The nourishing, comfortable formula delivers a long-lasting glossy appearance, with reapplication recommended to maintain color vibrancy and hydration throughout the day.'
+        },
+        { 
+            name: 'Gladiolus', 
+            image: 'shade4.jpg', 
+            color: '#F2B6C1', 
+            desc: 'A fresh, soft pink finish with a natural glow.',
+            ingredientsList: 'Petroleum Jelly, Sweet Almond Oil, Olive Oil, Vitamin E',
+            ingredientsDetails: 'Gladiolus – Pink Lip Gloss is formulated with purified petroleum jelly to create a smooth, high-shine base, blended with nourishing sweet almond oil, olive oil to condition and soften the lips. The soft pink tint is achieved using cosmetic-grade mica powder and food-grade color pigments, while vitamin E oil supports lip health and enhances product stability. A minimal amount of food-grade vanilla extract and natural honey may be included for a gentle flavor. This formulation is free from harsh chemicals and irritants, suitable for sensitive lips, and produced through a conscious process that causes no harm to animals or nature. Gladiolus is 100% safe, cruelty-free, and ethically made.',
+            applicationDetails: 'Gladiolus Pink Lip Gloss is best applied onto clean, moisturized lips using a clean applicator or fingertip for a fresh, soft pink finish with a natural glow. It can be worn alone for a subtle flush of color or layered over lipsticks to add brightness and dimension, complementing nude, rose, mauve, coral, and deeper pink shades particularly well. The smooth, lightweight formula feels comfortable on the lips and offers a lasting glossy look, with reapplication recommended to maintain color intensity and hydration throughout the day.'
+        }
+    ]
+}">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-5xl font-serif mb-4 reveal">The Shades</h2>
+            <p class="opacity-50 uppercase tracking-widest text-xs italic">Tap to explore each formula</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <template x-for="shade in shades" :key="shade.name">
+                <div @click="activeShade = shade; modalOpen = true" 
+                     class="group bg-white/40 p-4 rounded-[35px] border border-white/20 cursor-pointer hover:shadow-xl transition-all duration-500">
+                    <div class="h-80 w-full bg-white rounded-[25px] overflow-hidden flex items-center justify-center p-6 relative shadow-sm">
+                        <img :src="shade.image" :alt="shade.name" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute bottom-4 right-4 w-6 h-6 rounded-full border border-white shadow-md" :style="`background-color: ${shade.color}`"></div>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <h3 class="text-xl font-medium tracking-wide" x-text="shade.name"></h3>
+                        <p class="text-[10px] uppercase tracking-widest opacity-40 mt-2">View Formula</p>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <div x-show="modalOpen" 
+         x-transition 
+         x-cloak 
+         class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+
+        <div @click.away="modalOpen = false" 
+             class="bg-[rgb(198,219,213)] rounded-[40px] max-w-4xl w-full max-h-[85vh] overflow-hidden shadow-2xl relative flex flex-col md:flex-row">
+            
+            <<button @click="modalOpen = false" 
+        class="absolute top-6 right-6 z-50 p-3 flex items-center justify-center bg-white/20 backdrop-blur-md rounded-full text-[rgb(2,65,50)] shadow-lg transition-all duration-500 ease-in-out hover:rotate-90 hover:scale-110 hover:bg-[rgb(2,65,50)] hover:text-white group">
+    
+    <i data-lucide="x" class="w-5 h-5 transition-transform duration-500 group-active:scale-90"></i>
+    
+    <div class="absolute inset-0 rounded-full bg-cyan-400/0 group-hover:bg-cyan-400/20 blur-md transition-all duration-500"></div>
+</button>
+            <div class="md:w-1/2 bg-white p-12 flex items-center justify-center">
+                <img :src="activeShade.image" :alt="activeShade.name" class="max-h-[400px] w-auto object-contain">
+            </div>
+
+            <div class="md:w-1/2 p-10 md:p-12 overflow-y-auto">
+                <div class="space-y-8">
+                    <div>
+                        <h2 class="text-4xl font-serif mb-2" x-text="activeShade.name"></h2>
+                        <p class="text-sm opacity-60 uppercase tracking-widest font-bold">Noir Beauty Collection</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-bold uppercase tracking-[0.2em] opacity-40">Ingredients</h4>
+                        <p class="text-[14px] leading-relaxed opacity-80 text-[rgb(2,65,50)]" x-text="activeShade.ingredientsDetails"></p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-bold uppercase tracking-[0.2em] opacity-40">Application & Wear</h4>
+                        <p class="text-[14px] leading-relaxed italic opacity-80 text-[rgb(2,65,50)]" x-text="activeShade.applicationDetails"></p>
+                    </div>
+
+                    <button class="w-full bg-[rgb(2,65,50)] text-white py-4 rounded-xl font-bold uppercase tracking-widest text-xs hover:opacity-90 transition">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <footer id="contact" class="pt-24 pb-12 px-6 glass mt-20 border-t border-[rgb(2,65,50)]/20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
+            <div class="space-y-12">
+                <div>
+                    <img src="logo3.png" alt="NOIR Beauty" class="h-12 w-auto mb-6">
+                    <p class="max-w-md opacity-70 leading-relaxed text-lg">
+                        Redefining luxury through ethical science and timeless aesthetics. 
+                        Join our journey toward effortless elegance.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-bold uppercase tracking-[0.2em] opacity-50">The Brand</h4>
+                        <a href="https://www.instagram.com/noirbeautybyvn" target="_blank" class="flex items-center space-x-3 group">
+                            <div class="p-3 rounded-full bg-[rgb(2,65,50)] text-[rgb(198,219,213)] group-hover:scale-110 transition-transform">
+                                <i data-lucide="instagram" class="w-5 h-5"></i>
+                            </div>
+                            <span class="font-medium group-hover:opacity-60">@noirbeautybyvn</span>
+                        </a>
+                    </div>
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-bold uppercase tracking-[0.2em] opacity-40">The Member</h4>
+                       <a href="https://www.instagram.com/nikk3coreee_/" target="_blank" class="flex items-center space-x-3 group">
+                            <div class="p-3 rounded-full bg-[rgb(2,65,50)] text-[rgb(198,219,213)] group-hover:scale-110 transition-transform">
+                                <i data-lucide="instagram" class="w-5 h-5"></i>
+                            </div>
+                            <span class="font-medium group-hover:opacity-60">@nikk3coreee_</span>
+                        </a>
+                    </div>
+                </div>
+               <div class="pt-4">
+                    <h4 class="text-xs font-bold uppercase tracking-[0.2em] opacity-50 mb-2">Direct Inquiry</h4>
+                    <a href="mailto:noirbeautybyvn@gmail.com" 
+                       id="emailBtn"
+                       class="text-xl hover:opacity-60 transition underline underline-offset-8">
+                        noirbeautybyvn@gmail.com
+                    </a>
+                    <p id="copyStatus" class="text-[10px] uppercase tracking-widest mt-2 opacity-0 transition-all duration-300 text-[rgb(2,65,50)]">
+                         Copied to clipboard
+                    </p>
+                </div>
+            </div>
+
+            <div class="glass p-8 md:p-10 rounded-[40px] shadow-sm" x-data="{ sent: false }">
+                <template x-if="!sent">
+                    <form 
+                        action="https://api.web3forms.com/submit" 
+                        method="POST" 
+                        @submit.prevent="
+                            fetch('https://api.web3forms.com/submit', {
+                                method: 'POST',
+                                body: new FormData($el)
+                            }).then(response => {
+                                if (response.ok) { sent = true }
+                            })
+                        " 
+                        class="space-y-6">
+                        
+                        <input type="hidden" name="access_key" value="6d0fbf8a-32f1-4784-bac1-2253df633b40">
+                        <input type="hidden" name="subject" value="New Inquiry from NOIR Beauty">
+                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+                        <h3 class="text-2xl mb-2 logo-text">Send a Message</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs uppercase font-bold tracking-widest opacity-60">Name</label>
+                                <input type="text" name="name" required class="w-full bg-white/20 border-b border-[rgb(2,65,50)]/20 p-3 outline-none focus:border-[rgb(2,65,50)] transition">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs uppercase font-bold tracking-widest opacity-60">Email</label>
+                                <input type="email" name="email" required class="w-full bg-white/20 border-b border-[rgb(2,65,50)]/20 p-3 outline-none focus:border-[rgb(2,65,50)] transition">
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="text-xs uppercase font-bold tracking-widest opacity-60">Message</label>
+                            <textarea name="message" rows="4" required class="w-full bg-white/20 border-b border-[rgb(2,65,50)]/20 p-3 outline-none focus:border-[rgb(2,65,50)] transition resize-none"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-[rgb(2,65,50)] text-[rgb(198,219,213)] py-4 rounded-2xl font-bold uppercase tracking-[0.2em] hover:scale-[1.02] transition-transform">
+                            Send Inquiry
+                        </button>
+                    </form>
+                </template>
+                <template x-if="sent">
+                    <div class="h-full flex flex-col items-center justify-center py-12 text-center space-y-4">
+                        <div class="w-16 h-16 bg-[rgb(2,65,50)] text-[rgb(198,219,213)] rounded-full flex items-center justify-center mb-4"><i data-lucide="check" class="w-8 h-8"></i></div>
+                        <h3 class="text-2xl text-[rgb(2,65,50)]">Message Received</h3>
+                        <p class="opacity-70">Our concierge will get back to you within 24 hours.</p>
+                        <button @click="sent = false" class="text-sm underline uppercase tracking-widest pt-4">Send another</button>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <div class="text-center pt-8 border-t border-[rgb(2,65,50)]/30">
+            <p class="text-[11px] tracking-[0.5em] font-semibold uppercase text-[rgb(2,65,50)] opacity-80">
+                © 2025 NOIR Beauty | Privately Owned & Operated
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function initIcons() {
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', initIcons);
+
+        document.addEventListener('alpine:initialized', () => {
+            initIcons();
+        });
+
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.utils.toArray(".reveal").forEach(elem => {
+            gsap.from(elem, {
+                opacity: 0, y: 30, duration: 1.2,
+                scrollTrigger: { trigger: elem, start: "top 90%" }
+            });
+        });
+    </script>
+</body>
+</html>
