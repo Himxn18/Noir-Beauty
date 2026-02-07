@@ -6,7 +6,7 @@
     <title>NOIR Beauty | The Full Collection</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -349,7 +349,7 @@
         <div @click.away="modalOpen = false" 
              class="bg-[rgb(198,219,213)] rounded-[40px] max-w-4xl w-full max-h-[85vh] overflow-hidden shadow-2xl relative flex flex-col md:flex-row">
             
-            <<button @click="modalOpen = false" 
+            <button @click="modalOpen = false" 
         class="absolute top-6 right-6 z-50 p-3 flex items-center justify-center bg-white/20 backdrop-blur-md rounded-full text-[rgb(2,65,50)] shadow-lg transition-all duration-500 ease-in-out hover:rotate-90 hover:scale-110 hover:bg-[rgb(2,65,50)] hover:text-white group">
     
     <i data-lucide="x" class="w-5 h-5 transition-transform duration-500 group-active:scale-90"></i>
@@ -409,7 +409,7 @@
                     </div>
                     <div class="space-y-4">
                         <h4 class="text-xs font-bold uppercase tracking-[0.2em] opacity-40">The Member</h4>
-                       <a href="https://www.instagram.com/nikk3coreee_/" target="_blank" class="flex items-center space-x-3 group">
+                        <a href="https://www.instagram.com/nikk3coreee_/" target="_blank" class="flex items-center space-x-3 group">
                             <div class="p-3 rounded-full bg-[rgb(2,65,50)] text-[rgb(198,219,213)] group-hover:scale-110 transition-transform">
                                 <i data-lucide="instagram" class="w-5 h-5"></i>
                             </div>
@@ -483,10 +483,19 @@
             </div>
         </div>
 
-        <div class="text-center pt-8 border-t border-[rgb(2,65,50)]/30">
+        <div class="text-center pt-8 border-t border-[rgb(2,65,50)]/30 flex flex-col items-center space-y-5">
             <p class="text-[11px] tracking-[0.5em] font-semibold uppercase text-[rgb(2,65,50)] opacity-80">
                 © 2025 NOIR Beauty | Privately Owned & Operated
             </p>
+            
+            <a href="https://www.linkedin.com/in/himan-kashyap-1278492a1/" target="_blank" 
+               class="group relative inline-flex items-center gap-2 px-6 py-2 rounded-full 
+                      bg-white/30 hover:bg-[rgb(2,65,50)] hover:text-[rgb(198,219,213)] 
+                      transition-all duration-500 ease-out border border-[rgb(2,65,50)]/10 hover:shadow-lg hover:-translate-y-1">
+                <span class="text-[10px] uppercase tracking-widest opacity-70 group-hover:opacity-100 transition-opacity">Designed & Developed by</span>
+                <span class="font-serif text-sm font-bold tracking-wider group-hover:text-white transition-colors">HIMAN KASHYAP</span>
+                <i data-lucide="linkedin" class="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 group-hover:text-white transition-all"></i>
+            </a>
         </div>
     </footer>
 
